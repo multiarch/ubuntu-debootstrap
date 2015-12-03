@@ -85,7 +85,7 @@ for version in "${versions[@]}"; do
 	if [ "$repo" ]; then
 		docker build -t "${repo}:${suite}" "$dir"
 		if [ "$suite" != "$version" ]; then
-			docker tag -f "${repo}:${suite}" "${repo}:${version}"
+			docker tag -f "${repo}:${suite}" "${repo}:${version}-${arch}"
 		fi
 		docker run -it --rm "${repo}:${suite}" bash -xc '
 			cat /etc/apt/sources.list
