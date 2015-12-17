@@ -27,3 +27,15 @@ root@27fe384370c9:/# uname -a
 Linux 27fe384370c9 4.1.13-boot2docker #1 SMP Fri Nov 20 19:05:50 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
 root@27fe384370c9:/#
 ```
+
+It also works for `arm64`
+
+```console
+$ docker run -it --rm multiarch/ubuntu-debootstrap:arm64-wily
+root@723fb9f184fa:/# uname -a
+Linux 723fb9f184fa 4.1.13-boot2docker #1 SMP Fri Nov 20 19:05:50 UTC 2015 aarch64 aarch64 aarch64 GNU/Linux
+```
+
+## License
+
+MIT
