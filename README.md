@@ -1,4 +1,4 @@
-# ubuntu-debootstrap
+# :earth_africa: ubuntu-debootstrap
 
 Multiarch Ubuntu images for Docker.
 
