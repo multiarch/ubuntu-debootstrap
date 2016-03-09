@@ -102,9 +102,14 @@ EOF
 	if [ "$repo" ]; then
 	    docker build -t "${repo}:${arch}-${suite}-slim" "${dir}"
 	    mkdir -p "${dir}/full"
+	    (
+		cd "${dir}/full"
+		wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.5.0/x86_64_qemu-${qemu_arch}-static.tar.xz
+		tar xf *.xz
+	    )
 	    cat > "${dir}/full/Dockerfile" <<EOF
 FROM ${repo}:${arch}-${suite}-slim
-ADD https://github.com/multiarch/qemu-user-static/releases/download/v2.5.0/x86_64_qemu-${qemu_arch}-static.tar.gz /usr/bin
+ADD qemu-*-static /usr/bin/
 EOF
 	    docker build -t "${repo}:${arch}-${suite}" "${dir}/full"
 	fi
