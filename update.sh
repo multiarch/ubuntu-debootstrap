@@ -85,7 +85,7 @@ for version in "${versions[@]}"; do
 
 	if [ "$repo" ]; then
 	    sed -i /^ENV/d "${dir}/Dockerfile"
-		cat > "${dir}/Dockerfile" <<EOF
+		cat >> "${dir}/Dockerfile" <<EOF
 ENV ARCH=${uname_arch} UBUNTU_SUITE=${suite} DOCKER_REPO=${repo}
 RUN case "${ARCH}" in                                                                                                \
     x86_64|amd64)                                                                                                    \
