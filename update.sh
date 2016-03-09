@@ -80,10 +80,6 @@ for version in "${versions[@]}"; do
 	    sudo chown -R "$(id -u):$(id -g)" "$dir"
 
             xz -d < $dir/rootfs.tar.xz | gzip -c > $dir/rootfs.tar.gz
-	fi
-
-
-	if [ "$repo" ]; then
 	    sed -i /^ENV/d "${dir}/Dockerfile"
 		cat >> "${dir}/Dockerfile" <<EOF
 ENV ARCH=${uname_arch} UBUNTU_SUITE=${suite} DOCKER_REPO=${repo}
@@ -100,6 +96,10 @@ RUN case "${ARCH}" in                                                           
     ;;                                                                                                               \
     esac
 EOF
+	fi
+
+
+	if [ "$repo" ]; then
 	    docker build -t "${repo}:${arch}-${suite}-slim" "${dir}"
 	    mkdir -p "${dir}/full"
 	    cat > "${dir}/full/Dockerfile" <<EOF
