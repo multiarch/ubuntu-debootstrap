@@ -81,21 +81,7 @@ for version in "${versions[@]}"; do
 
             xz -d < $dir/rootfs.tar.xz | gzip -c > $dir/rootfs.tar.gz
 	    sed -i /^ENV/d "${dir}/Dockerfile"
-		cat >> "${dir}/Dockerfile" <<EOF
-ENV ARCH=${uname_arch} UBUNTU_SUITE=${suite} DOCKER_REPO=${repo}
-RUN case "\${ARCH}" in                                                                                                \
-    x86_64|amd64)                                                                                                    \
-          echo "deb http://archive.ubuntu.com/ubuntu/  ${suite} main universe" >>/etc/apt/sources.list;              \
-          echo "deb http://archive.ubuntu.com/ubuntu/  ${suite}-updates main universe" >>/etc/apt/sources.list;      \
-          echo "deb http://archive.ubuntu.com/ubuntu/  ${suite}-security main universe" >>/etc/apt/sources.list;     \
-	;;                                                                                                           \
-    *)                                                                                                               \
-          echo "deb http://ports.ubuntu.com/  ${suite} main universe" >>/etc/apt/sources.list;                       \
-          echo "deb http://ports.ubuntu.com/  ${suite}-updates main universe" >>/etc/apt/sources.list;               \
-          echo "deb http://ports.ubuntu.com/  ${suite}-security main universe" >>/etc/apt/sources.list;              \
-    ;;                                                                                                               \
-    esac
-EOF
+	    echo "ENV ARCH=${uname_arch} UBUNTU_SUITE=${suite} DOCKER_REPO=${repo}" >> "${dir}/Dockerfile"
 	fi
 
 
