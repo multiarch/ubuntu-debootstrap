@@ -83,16 +83,16 @@ for version in "${versions[@]}"; do
 	    sed -i /^ENV/d "${dir}/Dockerfile"
 		cat >> "${dir}/Dockerfile" <<EOF
 ENV ARCH=${uname_arch} UBUNTU_SUITE=${suite} DOCKER_REPO=${repo}
-RUN case "${ARCH}" in                                                                                                \
+RUN case "\${ARCH}" in                                                                                                \
     x86_64|amd64)                                                                                                    \
-        echo "deb http://archive.ubuntu.com/ubuntu/ ${suite} main universe" >>/etc/apt/sources.list                  \
-		echo "deb http://archive.ubuntu.com/ubuntu/ ${suite}-updates main universe" >>/etc/apt/sources.list  \
-		echo "deb http://archive.ubuntu.com/ubuntu/ ${suite}-security main universe" >>/etc/apt/sources.list \
+          echo "deb http://archive.ubuntu.com/ubuntu/  ${suite} main universe" >>/etc/apt/sources.list;              \
+          echo "deb http://archive.ubuntu.com/ubuntu/  ${suite}-updates main universe" >>/etc/apt/sources.list;      \
+          echo "deb http://archive.ubuntu.com/ubuntu/  ${suite}-security main universe" >>/etc/apt/sources.list;     \
 	;;                                                                                                           \
     *)                                                                                                               \
-		echo "deb http://ports.ubuntu.com/ ${suite} main universe" >>/etc/apt/sources.list                   \
-		echo "deb http://ports.ubuntu.com/  ${suite}-updates main universe" >>/etc/apt/sources.list          \
-		echo "deb http://ports.ubuntu.com/  ${suite}-security main universe" >>/etc/apt/sources.list         \
+          echo "deb http://ports.ubuntu.com/  ${suite} main universe" >>/etc/apt/sources.list;                       \
+          echo "deb http://ports.ubuntu.com/  ${suite}-updates main universe" >>/etc/apt/sources.list;               \
+          echo "deb http://ports.ubuntu.com/  ${suite}-security main universe" >>/etc/apt/sources.list;              \
     ;;                                                                                                               \
     esac
 EOF
@@ -104,8 +104,10 @@ EOF
 	    mkdir -p "${dir}/full"
 	    (
 		cd "${dir}/full"
-		wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.5.0/x86_64_qemu-${qemu_arch}-static.tar.xz
-		tar xf *.xz
+		if [ ! -f x86_64_qemu-${qemu_arch}-static.tar.xz ]; then
+		    wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.5.0/x86_64_qemu-${qemu_arch}-static.tar.xz
+		fi
+		tar xf x86_64_qemu-*.xz
 	    )
 	    cat > "${dir}/full/Dockerfile" <<EOF
 FROM ${repo}:${arch}-${suite}-slim
