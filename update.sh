@@ -90,10 +90,10 @@ for version in "${versions[@]}"; do
 	    mkdir -p "${dir}/full"
 	    (
 		cd "${dir}/full"
-		if [ ! -f x86_64_qemu-${qemu_arch}-static.tar.xz ]; then
-		    wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.7.0/x86_64_qemu-${qemu_arch}-static.tar.xz
+		if [ ! -f x86_64_qemu-${qemu_arch}-static.tar.gz ]; then
+		    wget -N https://github.com/multiarch/qemu-user-static/releases/download/v2.8.0/x86_64_qemu-${qemu_arch}-static.tar.gz
 		fi
-		tar xf x86_64_qemu-*.xz
+		tar xf x86_64_qemu-*.gz
 	    )
 	    cat > "${dir}/full/Dockerfile" <<EOF
 FROM ${repo}:${arch}-${suite}-slim
