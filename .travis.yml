@@ -1,0 +1,58 @@
+sudo: required
+services: docker
+language: bash
+env:
+    global:
+        - QEMU_VER=v2.8.4
+        - DOCKER_REPO=multiarch/ubuntu-debootstrap
+    matrix:
+        - ARCH=amd64 INCLUDE=wget QEMU_ARCH=x86_64 SUITE=trusty UNAME_ARCH=x86_64 VERSION=14.04
+        - ARCH=arm64 INCLUDE=wget QEMU_ARCH=aarch64 SUITE=trusty UNAME_ARCH=arm64 VERSION=14.04
+        - ARCH=armhf INCLUDE=wget QEMU_ARCH=arm SUITE=trusty UNAME_ARCH=armv7l VERSION=14.04
+        - ARCH=i386 INCLUDE=wget QEMU_ARCH=i386 SUITE=trusty UNAME_ARCH=i386 VERSION=14.04
+        - ARCH=powerpc INCLUDE=wget QEMU_ARCH=ppc SUITE=trusty UNAME_ARCH=powerpc VERSION=14.04
+        - ARCH=ppc64el INCLUDE=wget QEMU_ARCH=ppc64 SUITE=trusty UNAME_ARCH=ppc64el VERSION=14.04
+
+        - ARCH=amd64 INCLUDE=wget QEMU_ARCH=x86_64 SUITE=vivid UNAME_ARCH=x86_64 VERSION=15.04
+        - ARCH=arm64 INCLUDE=wget QEMU_ARCH=aarch64 SUITE=vivid UNAME_ARCH=arm64 VERSION=15.04
+        - ARCH=armhf INCLUDE=wget QEMU_ARCH=arm SUITE=vivid UNAME_ARCH=armv7l VERSION=15.04
+        - ARCH=i386 INCLUDE=wget QEMU_ARCH=i386 SUITE=vivid UNAME_ARCH=i386 VERSION=15.04
+        - ARCH=powerpc INCLUDE=wget QEMU_ARCH=ppc SUITE=vivid UNAME_ARCH=powerpc VERSION=15.04
+        - ARCH=ppc64el INCLUDE=wget QEMU_ARCH=ppc64 SUITE=vivid UNAME_ARCH=ppc64el VERSION=15.04
+
+        - ARCH=amd64 INCLUDE=iproute2,wget QEMU_ARCH=x86_64 SUITE=wily UNAME_ARCH=x86_64 VERSION=15.10
+        - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=wily UNAME_ARCH=arm64 VERSION=15.10
+        - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=wily UNAME_ARCH=armv7l VERSION=15.10
+        - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=wily UNAME_ARCH=i386 VERSION=15.10
+        - ARCH=powerpc INCLUDE=iproute2,wget QEMU_ARCH=ppc SUITE=wily UNAME_ARCH=powerpc VERSION=15.10
+        - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=wily UNAME_ARCH=ppc64el VERSION=15.10
+
+        - ARCH=amd64 INCLUDE=iproute2,wget QEMU_ARCH=x86_64 SUITE=xenial UNAME_ARCH=x86_64 VERSION=16.04
+        - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=xenial UNAME_ARCH=arm64 VERSION=16.04
+        - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=xenial UNAME_ARCH=armv7l VERSION=16.04
+        - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=xenial UNAME_ARCH=i386 VERSION=16.04
+        # - ARCH=powerpc INCLUDE=iproute2,wget QEMU_ARCH=ppc SUITE=xenial UNAME_ARCH=powerpc VERSION=16.04
+        - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=xenial UNAME_ARCH=ppc64el VERSION=16.04
+
+        - ARCH=amd64 INCLUDE=iproute2,wget QEMU_ARCH=x86_64 SUITE=yakkety UNAME_ARCH=x86_64 VERSION=16.10
+        - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=yakkety UNAME_ARCH=arm64 VERSION=16.10
+        - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=yakkety UNAME_ARCH=armv7l VERSION=16.10
+        - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=yakkety UNAME_ARCH=i386 VERSION=16.10
+        - ARCH=powerpc INCLUDE=iproute2,wget QEMU_ARCH=ppc SUITE=yakkety UNAME_ARCH=powerpc VERSION=16.10
+        - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=yakkety UNAME_ARCH=ppc64el VERSION=16.10
+
+        - ARCH=amd64 INCLUDE=iproute2,wget QEMU_ARCH=x86_64 SUITE=zesty UNAME_ARCH=x86_64 VERSION=17.04
+        - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=zesty UNAME_ARCH=arm64 VERSION=17.04
+        - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=zesty UNAME_ARCH=armv7l VERSION=17.04
+        - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=zesty UNAME_ARCH=i386 VERSION=17.04
+        - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=zesty UNAME_ARCH=ppc64el VERSION=17.04
+
+before_script:
+    - sudo apt-get -y install debootstrap
+    - echo "deb http://security.ubuntu.com/ubuntu zesty-security main universe" | sudo tee -a /etc/apt/sources.list
+    - sudo apt-get update -qq
+    - sudo apt-get -y install qemu-user-static
+script:
+    - sudo ./update.sh -a "$ARCH" -v "$VERSION" -q "$QEMU_ARCH" -u "$QEMU_VER" -d "$DOCKER_REPO" -s "$SUITE" -i "$INCLUDE" -o "$UNAME_ARCH"
+after_success:
+    - if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push $DOCKER_REPO; fi
