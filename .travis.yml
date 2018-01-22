@@ -5,7 +5,6 @@ env:
     global:
         - QEMU_VER=v2.9.1
         - DOCKER_REPO=multiarch/ubuntu-debootstrap
-        
     matrix:
         - ARCH=amd64 INCLUDE=wget QEMU_ARCH=x86_64 SUITE=trusty UNAME_ARCH=x86_64 VERSION=14.04
         - ARCH=arm64 INCLUDE=wget QEMU_ARCH=aarch64 SUITE=trusty UNAME_ARCH=arm64 VERSION=14.04
