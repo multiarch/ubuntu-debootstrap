@@ -47,12 +47,18 @@ env:
         - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=zesty UNAME_ARCH=i386 VERSION=17.04
         - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=zesty UNAME_ARCH=ppc64el VERSION=17.04
 
+        - ARCH=amd64 INCLUDE=iproute2,wget QEMU_ARCH=x86_64 SUITE=artful UNAME_ARCH=x86_64 VERSION=17.10
+        - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=artful UNAME_ARCH=arm64 VERSION=17.10
+        - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=artful UNAME_ARCH=armv7l VERSION=17.10
+        - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=artful UNAME_ARCH=i386 VERSION=17.10
+        - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=artful UNAME_ARCH=ppc64el VERSION=17.10
+
 before_script:
     - sudo apt-get -y install debootstrap
-    - echo "deb http://security.ubuntu.com/ubuntu zesty-security main universe" | sudo tee -a /etc/apt/sources.list
+    - echo "deb http://security.ubuntu.com/ubuntu artful-security main universe" | sudo tee -a /etc/apt/sources.list
     - sudo apt-get update -qq
     - sudo apt-get -y install qemu-user-static
 script:
     - sudo ./update.sh -a "$ARCH" -v "$VERSION" -q "$QEMU_ARCH" -u "$QEMU_VER" -d "$DOCKER_REPO" -s "$SUITE" -i "$INCLUDE" -o "$UNAME_ARCH"
 after_success:
-    - if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push $DOCKER_REPO; fi
+    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push $DOCKER_REPO
