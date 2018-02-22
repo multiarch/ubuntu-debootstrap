@@ -3,7 +3,7 @@ services: docker
 language: bash
 env:
     global:
-        - QEMU_VER=v2.9.1
+        - QEMU_VER=v2.11.0
         - DOCKER_REPO=multiarch/ubuntu-debootstrap
     matrix:
         - ARCH=amd64 INCLUDE=wget QEMU_ARCH=x86_64 SUITE=trusty UNAME_ARCH=x86_64 VERSION=14.04
@@ -17,21 +17,14 @@ env:
         - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=xenial UNAME_ARCH=arm64 VERSION=16.04
         - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=xenial UNAME_ARCH=armv7l VERSION=16.04
         - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=xenial UNAME_ARCH=i386 VERSION=16.04
-        # - ARCH=powerpc INCLUDE=iproute2,wget QEMU_ARCH=ppc SUITE=xenial UNAME_ARCH=powerpc VERSION=16.04
+        - ARCH=powerpc INCLUDE=iproute2,wget QEMU_ARCH=ppc SUITE=xenial UNAME_ARCH=powerpc VERSION=16.04
         - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=xenial UNAME_ARCH=ppc64el VERSION=16.04
-
-        - ARCH=amd64 INCLUDE=iproute2,wget QEMU_ARCH=x86_64 SUITE=zesty UNAME_ARCH=x86_64 VERSION=17.04
-        - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=zesty UNAME_ARCH=arm64 VERSION=17.04
-        - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=zesty UNAME_ARCH=armv7l VERSION=17.04
-        - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=zesty UNAME_ARCH=i386 VERSION=17.04
-        - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=zesty UNAME_ARCH=ppc64el VERSION=17.04
 
         - ARCH=amd64 INCLUDE=iproute2,wget QEMU_ARCH=x86_64 SUITE=artful UNAME_ARCH=x86_64 VERSION=17.10
         - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=artful UNAME_ARCH=arm64 VERSION=17.10
         - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=artful UNAME_ARCH=armv7l VERSION=17.10
         - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=artful UNAME_ARCH=i386 VERSION=17.10
         - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=artful UNAME_ARCH=ppc64el VERSION=17.10
-
 before_script:
     - sudo apt-get -y install debootstrap
     - echo "deb http://security.ubuntu.com/ubuntu artful-security main universe" | sudo tee -a /etc/apt/sources.list
