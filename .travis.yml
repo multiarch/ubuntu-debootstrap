@@ -3,7 +3,7 @@ services: docker
 language: bash
 env:
     global:
-        - QEMU_VER=v2.11.0
+        - QEMU_VER=v2.12.0
         - DOCKER_REPO=multiarch/ubuntu-debootstrap
     matrix:
         - ARCH=amd64 INCLUDE=wget QEMU_ARCH=x86_64 SUITE=trusty UNAME_ARCH=x86_64 VERSION=14.04
