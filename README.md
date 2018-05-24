@@ -1,4 +1,4 @@
-# :earth_africa: ubuntu-debootstrap
+# :earth_africa: ubuntu-debootstrap [![Build Status](https://travis-ci.org/multiarch/ubuntu-debootstrap.svg?branch=master)](https://travis-ci.org/multiarch/ubuntu-debootstrap)
 
 ![](https://raw.githubusercontent.com/multiarch/dockerfile/master/logo.jpg)
 
