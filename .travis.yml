@@ -20,11 +20,11 @@ env:
         - ARCH=powerpc INCLUDE=iproute2,wget QEMU_ARCH=ppc SUITE=xenial UNAME_ARCH=powerpc VERSION=16.04
         - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=xenial UNAME_ARCH=ppc64el VERSION=16.04
 
-        - ARCH=amd64 INCLUDE=iproute2,wget QEMU_ARCH=x86_64 SUITE=artful UNAME_ARCH=x86_64 VERSION=17.10
-        - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=artful UNAME_ARCH=arm64 VERSION=17.10
-        - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=artful UNAME_ARCH=armv7l VERSION=17.10
-        - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=artful UNAME_ARCH=i386 VERSION=17.10
-        - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=artful UNAME_ARCH=ppc64el VERSION=17.10
+        - ARCH=amd64 INCLUDE=iproute2,wget QEMU_ARCH=x86_64 SUITE=bionic UNAME_ARCH=x86_64 VERSION=18.04
+        - ARCH=arm64 INCLUDE=iproute2,wget QEMU_ARCH=aarch64 SUITE=bionic UNAME_ARCH=arm64 VERSION=18.04
+        - ARCH=armhf INCLUDE=iproute2,wget QEMU_ARCH=arm SUITE=bionic UNAME_ARCH=armv7l VERSION=18.04
+        - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=bionic UNAME_ARCH=i386 VERSION=18.04
+        - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=bionic UNAME_ARCH=ppc64el VERSION=18.04
 before_script:
     - sudo apt-get -y install debootstrap
     - echo "deb http://security.ubuntu.com/ubuntu artful-security main universe" | sudo tee -a /etc/apt/sources.list
