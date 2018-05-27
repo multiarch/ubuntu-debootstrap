@@ -26,10 +26,11 @@ env:
         - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=bionic UNAME_ARCH=i386 VERSION=18.04
         - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=bionic UNAME_ARCH=ppc64el VERSION=18.04
 before_script:
-    - sudo apt-get -y install debootstrap
-    - echo "deb http://security.ubuntu.com/ubuntu artful-security main universe" | sudo tee -a /etc/apt/sources.list
     - sudo apt-get update -qq
-    - sudo apt-get -y install qemu-user-static
+    - sudo apt-get install --only-upgrade dpkg
+    - echo "deb http://archive.ubuntu.com/ubuntu bionic main universe" | sudo tee -a /etc/apt/sources.list
+    - sudo apt-get update -qq
+    - sudo apt-get -yt bionic install qemu-user-static debootstrap
 script:
     - sudo ./update.sh -a "$ARCH" -v "$VERSION" -q "$QEMU_ARCH" -u "$QEMU_VER" -d "$DOCKER_REPO" -s "$SUITE" -i "$INCLUDE" -o "$UNAME_ARCH"
 after_success:
