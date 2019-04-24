@@ -6,7 +6,7 @@ addons:
   apt:
     packages:
       - debootstrap
-      - qemu-debootstrap
+      - qemu-user-static
 env:
     global:
         - QEMU_VER=v3.1.0-3
