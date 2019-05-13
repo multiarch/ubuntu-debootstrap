@@ -1,5 +1,4 @@
 dist: xenial
-sudo: required
 services: docker
 language: bash
 addons:
@@ -34,6 +33,10 @@ env:
         - ARCH=i386 INCLUDE=iproute2,wget QEMU_ARCH=i386 SUITE=bionic UNAME_ARCH=i386 VERSION=18.04
         - ARCH=ppc64el INCLUDE=iproute2,wget QEMU_ARCH=ppc64 SUITE=bionic UNAME_ARCH=ppc64el VERSION=18.04
 script:
-    - sudo ./update.sh -a "$ARCH" -v "$VERSION" -q "$QEMU_ARCH" -u "$QEMU_VER" -d "$DOCKER_REPO" -s "$SUITE" -i "$INCLUDE" -o "$UNAME_ARCH"
+    - ./update.sh -a "$ARCH" -v "$VERSION" -q "$QEMU_ARCH" -u "$QEMU_VER" -d "$DOCKER_REPO" -s "$SUITE" -i "$INCLUDE" -o "$UNAME_ARCH"
 after_success:
-    - if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker push $DOCKER_REPO; fi
+    - |
+      if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then
+          docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && \
+              docker push $DOCKER_REPO
+      fi
