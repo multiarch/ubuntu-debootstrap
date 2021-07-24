@@ -10,7 +10,7 @@ addons:
       - qemu-user-static
 env:
     global:
-        - QEMU_VER=v5.1.0-5
+        - QEMU_VER=v5.2.0-2
         - DOCKER_REPO=multiarch/ubuntu-debootstrap
     matrix:
         - ARCH=amd64 INCLUDE=wget QEMU_ARCH=x86_64 SUITE=trusty UNAME_ARCH=x86_64 VERSION=14.04
