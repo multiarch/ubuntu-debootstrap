@@ -1,0 +1,45 @@
+name: actions
+on:
+  push:
+  schedule:
+    - cron: '0 0 * * 0'
+jobs:
+  ubuntu-debootstrap:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        QEMU_VER: [v6.0.0-1]
+        DOCKER_REPO: [docker.io/multiarch/ubuntu-debootstrap]
+        VERSION: ["14.04", "16.04", "18.04", "20.04", "21.04",]
+        UNAME_ARCH: [x86_64, arm64, armv7l, i386, powerpc, ppc64el]
+        include:
+          - {ARCH: amd64,   QEMU_ARCH: x86_64,  UNAME_ARCH: x86_64}
+          - {ARCH: arm64,   QEMU_ARCH: aarch64, UNAME_ARCH: arm64}
+          - {ARCH: armhf,   QEMU_ARCH: arm,     UNAME_ARCH: armv7l}
+          - {ARCH: i386,    QEMU_ARCH: i386,    UNAME_ARCH: i386}
+          - {ARCH: powerpc, QEMU_ARCH: ppc,     UNAME_ARCH: powerpc}
+          - {ARCH: ppc64el, QEMU_ARCH: ppc64,   UNAME_ARCH: ppc64el}
+          - {VERSION: "14.04", INCLUDE: "wget",           SUITE: trusty}
+          - {VERSION: "16.04", INCLUDE: "iproute2,wget",  SUITE: xenial}
+          - {VERSION: "18.04", INCLUDE: "iproute2,wget",  SUITE: bionic}
+          - {VERSION: "20.04", INCLUDE: "iproute2,wget",  SUITE: focal}
+          - {VERSION: "21.04", INCLUDE: "iproute2,wget",  SUITE: hirsute}
+        exclude:
+          - {VERSION: "18.04", UNAME_ARCH: powerpc}
+          - {VERSION: "20.04", UNAME_ARCH: powerpc}
+          - {VERSION: "21.04", UNAME_ARCH: powerpc}
+          - {VERSION: "20.04", UNAME_ARCH: i386}
+          - {VERSION: "21.04", UNAME_ARCH: i386}
+          - {VERSION: "21.04", UNAME_ARCH: arm64}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          sudo add-apt-repository 'deb http://archive.ubuntu.com/ubuntu focal main universe'
+          sudo apt-get update && sudo apt-get install -y qemu-user-static debootstrap
+          ./update.sh -a ${{ matrix.ARCH }} -v ${{ matrix.VERSION }} -q ${{ matrix.QEMU_ARCH }} -u ${{ matrix.QEMU_VER }} -d ${{ matrix.DOCKER_REPO }} -s ${{ matrix.SUITE }} -i ${{ matrix.INCLUDE }} -o ${{ matrix.UNAME_ARCH }}
+      - name: Publish
+        if: github.ref == 'refs/heads/master'
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+          docker push -a ${{ matrix.DOCKER_REPO }}

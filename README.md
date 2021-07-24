@@ -1,6 +1,6 @@
 > Notice: these images may not be fully up to date, it is suggested to use the [ubuntu-core](https://github.com/multiarch/ubuntu-core) image instead
 
-# :earth_africa: ubuntu-debootstrap [![Build Status](https://travis-ci.org/multiarch/ubuntu-debootstrap.svg?branch=master)](https://travis-ci.org/multiarch/ubuntu-debootstrap)
+# :earth_africa: ubuntu-debootstrap [![actions](https://github.com/multiarch/ubuntu-debootstrap/actions/workflows/actions.yml/badge.svg)](https://github.com/multiarch/ubuntu-debootstrap/actions/workflows/actions.yml)
 
 ![](https://raw.githubusercontent.com/multiarch/dockerfile/master/logo.jpg)
 
