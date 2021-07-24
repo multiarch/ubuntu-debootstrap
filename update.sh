@@ -71,15 +71,4 @@ EOF
     docker build -t "${DOCKER_REPO}:${ARCH}-${SUITE}" "${dir}/full"
 fi
 
-docker run -it --rm "${DOCKER_REPO}:${ARCH}-${SUITE}" bash -xc '
-    uname -a
-    echo
-    cat /etc/apt/sources.list
-    echo
-    cat /etc/os-release 2>/dev/null
-    echo
-    cat /etc/lsb-release 2>/dev/null
-    echo
-    cat /etc/debian_version 2>/dev/null
-    true
-'
+docker run --rm ${DOCKER_REPO}:${ARCH}-${SUITE} /bin/sh -ec "echo Hello from Ubuntu !; set -x; uname -a;"
