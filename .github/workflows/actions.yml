@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        QEMU_VER: [v6.0.0-1]
+        QEMU_VER: [v6.1.0-1]
         DOCKER_REPO: [docker.io/multiarch/ubuntu-debootstrap]
         VERSION: ["14.04", "16.04", "18.04", "20.04", "21.04",]
         UNAME_ARCH: [x86_64, arm64, armv7l, i386, powerpc, ppc64el]
@@ -28,8 +28,6 @@ jobs:
           - {VERSION: "18.04", UNAME_ARCH: powerpc}
           - {VERSION: "20.04", UNAME_ARCH: powerpc}
           - {VERSION: "21.04", UNAME_ARCH: powerpc}
-          - {VERSION: "20.04", UNAME_ARCH: i386}
-          - {VERSION: "21.04", UNAME_ARCH: i386}
           - {VERSION: "21.04", UNAME_ARCH: arm64}
     steps:
       - uses: actions/checkout@v2
